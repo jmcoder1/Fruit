@@ -1,6 +1,7 @@
 package com.example.jojo.fruit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 
 import android.media.Image;
@@ -10,11 +11,13 @@ import android.net.NetworkInfo;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -39,6 +42,7 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
     private FruitAdapter mFruitAdapterAdapter;
 
     private RelativeLayout noConnectionView;
+    private Button mConnectButton;
     private CurvesLoader mProgressLoader;
 
     @Override
@@ -46,13 +50,22 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fruits);
 
+        final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
         mProgressLoader = findViewById(R.id.loading_spinner);
         noConnectionView = findViewById(R.id.no_connection_view);
         noConnectionView.setVisibility(View.INVISIBLE);
 
+        mConnectButton = findViewById(R.id.connect_to_wifi_button);
+        mConnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiManager.setWifiEnabled(true);
+            }
+        });
+
         ListView fruitListView = (ListView) findViewById(R.id.fruit_list);
         // TODO: Change this to an actual empty layout
-        fruitListView.setEmptyView(noConnectionView);
 
         mFruitAdapterAdapter = new FruitAdapter(this, new ArrayList<Fruit>());
         fruitListView.setAdapter(mFruitAdapterAdapter);
@@ -60,7 +73,12 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
         fruitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // TODO: Open item on click
+                Fruit currentFruit = mFruitAdapterAdapter.getItem(position);
+                Intent intent = new Intent(FruitsActivity.this, FruitInfoActivity.class);
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_NAME, currentFruit.getName());
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_PRICE, currentFruit.getPrice());
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_WEIGHT, currentFruit.getWeight());
+                 startActivity(intent);
             }
         });
 

@@ -9,10 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
-import java.lang.Object;
 
 public class FruitAdapter extends ArrayAdapter<Fruit> {
 
