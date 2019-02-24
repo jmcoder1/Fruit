@@ -32,7 +32,6 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
 
     private static final String LOG_TAG = FruitsActivity.class.getName();
 
-    // URL Fruit data
     private static final String DUMMY_REQUEST =
             "https://raw.githubusercontent.com/fmtvp/recruit-test-data/master/data.json";
 

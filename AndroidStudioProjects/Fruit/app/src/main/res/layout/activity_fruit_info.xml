@@ -7,14 +7,61 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/fruit_text_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/fruit_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/avatar_background"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/fruit_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Hello" />
+        tools:text="B" />
+
+    <RelativeLayout
+        android:id="@+id/fruit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fruit_image"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/fruit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            tools:text="BlueBerry" />
+
+        <TextView
+            android:id="@+id/fruit_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fruit_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            tools:text="£0.99" />
+
+        <TextView
+            android:id="@+id/fruit_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fruit_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fruit_price"
+            tools:text="0.12kg" />
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

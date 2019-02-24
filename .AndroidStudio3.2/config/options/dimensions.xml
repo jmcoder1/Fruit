@@ -14,7 +14,7 @@
     <location key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog.0.0.1366.768" x="677" y="112" />
     <location key="#com.intellij.ide.util.MemberChooser.0.0.1366.768" x="716" y="92" />
     <location key="#com.intellij.refactoring.rename.AutomaticRenamingDialog.0.0.1366.768" x="283" y="0" />
-    <location key="find.popup.0.0.1366.768" x="745" y="69" />
+    <location key="find.popup.0.0.1366.768" x="741" y="65" />
     <location key="Github.ShareDialog.0.0.1366.768" x="475" y="241" />
     <location key="Vcs.Push.Dialog.0.0.1366.768" x="413" y="95" />
     <location key="GitCloneDialog.0.0.1366.768" x="531" y="291" />
@@ -38,7 +38,7 @@
     <size key="GridCell.Tab.0.right.0.0.1366.768" width="0" height="0" />
     <size key="GridCell.Tab.0.bottom.0.0.1366.768" width="0" height="0" />
     <size key="CommitChangelistDialog2.0.0.1366.768" width="672" height="719" />
-    <size key="find.popup.0.0.1366.768" width="621" height="659" />
+    <size key="find.popup.0.0.1366.768" width="625" height="663" />
     <size key="GitCloneDialog.0.0.1366.768" width="596" height="209" />
     <size key="GridCell.Tab.1.left.0.0.1366.768" width="1304" height="210" />
     <size key="GridCell.Tab.1.center.0.0.1366.768" width="1304" height="210" />
