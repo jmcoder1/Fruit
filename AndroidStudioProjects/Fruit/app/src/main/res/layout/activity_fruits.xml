@@ -45,7 +45,7 @@
             android:layout_margin="16dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_no_wifi"
-            android:contentDescription=""/>
+            android:contentDescription="@string/no_connection_image"/>
 
         <TextView
             android:id="@+id/no_connection_title"
@@ -77,12 +77,12 @@
             android:id="@+id/connect_to_wifi_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_centerHorizontal="true"
             android:background="?attr/colorAccent"
             android:layout_below="@id/no_connection_subtitle"
             android:text="@string/connect_to_wifi_button"
-            android:textColor="#ffffff"/>
+            android:textColor="#ffffff" />
     </RelativeLayout>
 
 </RelativeLayout>

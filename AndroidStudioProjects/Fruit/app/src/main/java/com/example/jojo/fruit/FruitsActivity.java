@@ -4,24 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 
-import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agrawalsuneet.loaderspack.loaders.CurvesLoader;
 
@@ -36,13 +36,9 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
     private static final String DUMMY_REQUEST =
             "https://raw.githubusercontent.com/fmtvp/recruit-test-data/master/data.json";
 
-    // Constant value for the fruit loader ID. Comes into play if you're using multiple loaders
-    private static final int FRUIT_LOADER_ID = 1;
-
     private FruitAdapter mFruitAdapterAdapter;
 
     private RelativeLayout noConnectionView;
-    private Button mConnectButton;
     private CurvesLoader mProgressLoader;
 
     @Override
@@ -50,37 +46,11 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fruits);
 
-        final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        initConnectButton();
+        initFruitListView();
 
         mProgressLoader = findViewById(R.id.loading_spinner);
         noConnectionView = findViewById(R.id.no_connection_view);
-        noConnectionView.setVisibility(View.INVISIBLE);
-
-        mConnectButton = findViewById(R.id.connect_to_wifi_button);
-        mConnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wifiManager.setWifiEnabled(true);
-            }
-        });
-
-        ListView fruitListView = (ListView) findViewById(R.id.fruit_list);
-        // TODO: Change this to an actual empty layout
-
-        mFruitAdapterAdapter = new FruitAdapter(this, new ArrayList<Fruit>());
-        fruitListView.setAdapter(mFruitAdapterAdapter);
-
-        fruitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Fruit currentFruit = mFruitAdapterAdapter.getItem(position);
-                Intent intent = new Intent(FruitsActivity.this, FruitInfoActivity.class);
-                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_NAME, currentFruit.getName());
-                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_PRICE, currentFruit.getPrice());
-                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_WEIGHT, currentFruit.getWeight());
-                 startActivity(intent);
-            }
-        });
 
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -91,13 +61,50 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
             LoaderManager loaderManager = getLoaderManager();
-
             loaderManager.initLoader(0, null, this);
         } else {
             // Otherwise, display error and hide the loading indicator
             mProgressLoader.setVisibility(View.GONE);
             noConnectionView.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * This method initialises the 'Connect' button that connects to the wifi.
+     */
+    private void initConnectButton() {
+        final WifiManager wifiManager = (WifiManager) getApplicationContext()
+                .getSystemService(Context.WIFI_SERVICE);
+
+        Button connectButton = findViewById(R.id.connect_to_wifi_button);
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wifiManager.setWifiEnabled(true);
+                recreate();
+            }
+        });
+    }
+
+    private void initFruitListView() {
+        ListView fruitListView = (ListView) findViewById(R.id.fruit_list);
+
+        mFruitAdapterAdapter = new FruitAdapter(this, new ArrayList<Fruit>());
+        fruitListView.setAdapter(mFruitAdapterAdapter);
+        fruitListView.setEmptyView(noConnectionView);
+
+        fruitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Fruit currentFruit = mFruitAdapterAdapter.getItem(position);
+                Intent intent = new Intent(FruitsActivity.this, FruitInfoActivity.class);
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_NAME, currentFruit.getName());
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_PRICE, currentFruit.getPrice());
+                intent.putExtra(FruitInfoActivity.EXTRA_FRUIT_WEIGHT, currentFruit.getWeight());
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -119,12 +126,35 @@ public class FruitsActivity extends AppCompatActivity implements LoaderCallbacks
             mFruitAdapterAdapter.addAll(fruits);
             noConnectionView.setVisibility(View.GONE);
         }
-        // TODO: Handle what would happen if there are no fruits shown, i.e. a link with no fruits in the JSON
     }
 
     @Override
     public void onLoaderReset(Loader<List<Fruit>> loader) {
         Log.e(LOG_TAG, "called: onLoaderReset");
         mFruitAdapterAdapter.clear();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_fruits, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reconnect:
+                recreate();
+                Toast.makeText(this, "Reloading data", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.action_settings:
+                Log.v(LOG_TAG, "onOptionsItemSelected:: opened Settings activity");
+                Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+                startActivity(startSettingsActivity);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

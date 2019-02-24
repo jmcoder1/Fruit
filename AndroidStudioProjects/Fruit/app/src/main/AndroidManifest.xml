@@ -23,5 +23,14 @@
         </activity>
 
         <activity android:name=".FruitInfoActivity"></activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".FruitsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".FruitsActivity" />
+        </activity>
+
     </application>
 </manifest>
